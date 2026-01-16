@@ -1,0 +1,2 @@
+- [ ] Replace Expanded ListView for recent searches with Column to close items
+- [ ] Increase SizedBox height below list from 0.02 to 0.05 to move content down

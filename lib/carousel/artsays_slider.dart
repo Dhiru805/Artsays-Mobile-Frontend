@@ -13,7 +13,6 @@ class ImageSliderScreen extends StatefulWidget {
 class _ImageSliderScreenState extends State<ImageSliderScreen> {
   final PageController _controller = PageController();
   int currentIndex = 0;
-  bool _showBottomSheet = false;
 
   final List<Map<String, String>> sliderData = [
     {
@@ -56,6 +55,31 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned(
+            top: 30,
+            left: 16,
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black,
+                size: 24,
+              ),
+              onPressed: () {
+                if (currentIndex > 0) {
+                  setState(() {
+                    currentIndex--;
+                    _controller.animateToPage(
+                      currentIndex,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  });
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ),
           PageView.builder(
             controller: _controller,
             itemCount: sliderData.length,
@@ -77,18 +101,26 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
               }
               return Padding(
                 padding: EdgeInsets.only(top: topPadding),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Image.asset(
-                    sliderData[index]["image"]!,
-                    width: screenWidth,
-                    fit: BoxFit.contain,
-                  ),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        sliderData[index]["image"]!,
+                        width: screenWidth,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+
+                    // 🔹 Back Arrow Icon (Top Left)
+                    // 🔹 Back Arrow Icon (Top Left)
+                  ],
                 ),
               );
             },
           ),
 
+          // 🔹 Bottom container
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -152,6 +184,8 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
               ),
             ),
           ),
+
+          // 🔹 Bottom Buttons (Skip & Next)
           Positioned(
             bottom: screenHeight * 0.02,
             left: 0,
@@ -161,6 +195,7 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // <SKIP button (from 2nd screen onwards)
                   ElevatedButton(
                     onPressed: () {
                       if (currentIndex > 0) {
@@ -172,6 +207,13 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
                             curve: Curves.easeInOut,
                           );
                         });
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SplashScreen2(),
+                          ),
+                        );
                       }
                     },
                     style:
@@ -179,7 +221,6 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
                           backgroundColor: ColorConstant.backgroundColor,
                           side: BorderSide.none,
                           elevation: 0,
-
                           foregroundColor: Colors.white,
                         ).copyWith(
                           overlayColor: WidgetStateProperty.all(
@@ -189,11 +230,12 @@ class _ImageSliderScreenState extends State<ImageSliderScreen> {
                             Colors.transparent,
                           ),
                         ),
-                    child: currentIndex == 0
-                        ? const Text("SKIP>")
+                    child: currentIndex > 0
+                        ? const Text("<SKIP")
                         : const SizedBox.shrink(),
                   ),
 
+                  // NEXT button
                   ElevatedButton(
                     onPressed: () {
                       if (currentIndex < sliderData.length - 1) {

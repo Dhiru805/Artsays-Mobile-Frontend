@@ -3,6 +3,7 @@ import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';
+import 'package:artsays_app/shared/widgets/social_bottom_nav_bar.dart';
 import 'package:artsays_app/signup/widget/signup_container.dart';
 import 'package:flutter/material.dart';
 
@@ -195,12 +196,13 @@ class _LoginPageState extends State<LoginPage> {
                         width: SizeConfig.getWidth(160),
                         child: MyButton(
                           onpressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const ImageSliderScreen(),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const SocialBottomNavBar(),
+                              ),
+                            );
                           },
                           color: ColorConstant.orange,
                           text: StringConstant.login,
@@ -267,14 +269,14 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: SizeConfig.getHeight(10)),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignupContainer(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => SignupContainer(),
+                          //   ),
+                          // );
                         },
                         child: Text(
                           "Don’t have an account yet?",

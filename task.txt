@@ -1,0 +1,20 @@
+1.In sliding animation,back button is not working, change z-index also of that back button, - Done
+2.Sign in and login slide up animation is not proper when clicks on button - 
+(add animation but it not work smoothly)
+3.From nav bar click,when someone redirect on new page from navbar at that time no one page sliding animation is not smooth
+- add some blue and make it smooth
+
+4.On explore page, img options are not popper - Done
+5.On save tab have same page like tag page and when someone clicks on suggestion profile button at that time profile suggestion page will appear - Done
+
+6.In live stream when someone click on end stream at that time post live page will appear not on done button - Done
+
+7.In live stream 3 dots have dropdown you need to add - Done
+8.On search page when clicks on search bar at that time keyboard is open and comes with error - Done
+
+
+Not done :
+1.First need to change app logo
+2.In profile section, sliding right and left animation not operating with tab
+3.Create post or go live widget will overlay on screen where we are now
+4.Artsays and notification icon need to align properly
