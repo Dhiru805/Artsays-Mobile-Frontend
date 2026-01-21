@@ -3,6 +3,8 @@ import 'package:artsays_app/home_social/profileTabBar/widget/custom_slider_conta
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../../config/size_config.dart';
+
 class SocialProfileArtistMyAccount extends StatefulWidget {
   const SocialProfileArtistMyAccount({super.key});
 
@@ -13,10 +15,10 @@ class SocialProfileArtistMyAccount extends StatefulWidget {
 
 class _SocialProfileArtistMyAccountState
     extends State<SocialProfileArtistMyAccount> {
-  late double screenwidth;
-  late double screenHeight;
+  late double screenHeight = SizeConfig.screenHeight;
+  late double screenWidth = SizeConfig.screenWidth;
 
-  final List<String> iamgeAssets = [
+  final List<String> imageAssets = [
     ImageAssetConstant.waterBoat,
     ImageAssetConstant.fieldBoat,
     ImageAssetConstant.grassField,
@@ -30,30 +32,34 @@ class _SocialProfileArtistMyAccountState
     ImageAssetConstant.fieldBoat,
     ImageAssetConstant.grassField,
   ];
+
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     screenHeight = MediaQuery.of(context).size.height;
-    screenwidth = MediaQuery.of(context).size.width;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
         children: [
           Container(
-            width: screenwidth,
+            width: screenWidth,
             color: Colors.white,
 
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: screenwidth * 0.025, // responsive 10px approx
+                horizontal: screenWidth * 0.025, // responsive 10px approx
                 vertical: screenHeight * 0.006,
               ), // responsive 5px approx),
               child: MasonryGridView.count(
                 crossAxisCount: 3,
-                crossAxisSpacing: screenwidth * 0.008, // 3px approx
-                mainAxisSpacing: screenHeight * 0.0025, // 2px approx
+                crossAxisSpacing: screenWidth * 0.008,
+                // 3px approx
+                mainAxisSpacing: screenHeight * 0.0025,
 
-                itemCount: iamgeAssets.length,
+                // 2px approx
+                itemCount: imageAssets.length,
                 itemBuilder: (context, index) {
-                  return Image.asset(iamgeAssets[index]);
+                  return Image.asset(imageAssets[index]);
                 },
               ),
             ),

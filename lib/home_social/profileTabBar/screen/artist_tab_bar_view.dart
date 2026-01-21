@@ -1,3 +1,4 @@
+import 'package:artsays_app/config/size_config.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/home_social/profileTabBar/widget/custom_slder_container_profile_join.dart';
 import 'package:artsays_app/home_social/profileTabBar/widget/profile_join_card.dart';
@@ -22,8 +23,9 @@ class _ArtistTabBarViewState extends State<ArtistTabBarView> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     final List<ProfileJoinCard> profileCards = [
       ProfileJoinCard(
@@ -65,14 +67,14 @@ class _ArtistTabBarViewState extends State<ArtistTabBarView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 16,
+                      padding: EdgeInsets.symmetric(
+                        vertical: screenHeight * 0.02,
+                        horizontal: screenWidth * 0.04,
                       ),
                       child: Text(
                         "Suggested for you",
                         style: GoogleFonts.montserrat(
-                          fontSize: 16,
+                          fontSize: SizeConfig.getFont(16),
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),

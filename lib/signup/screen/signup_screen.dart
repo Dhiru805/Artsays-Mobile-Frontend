@@ -2,6 +2,8 @@ import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/signup/widget/signup_container.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/size_config.dart';
+
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
@@ -9,7 +11,7 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
-        height: 246,
+        height: SizeConfig.getHeight(240),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 46),

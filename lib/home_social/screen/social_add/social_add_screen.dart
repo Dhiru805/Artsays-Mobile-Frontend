@@ -5,6 +5,8 @@ import 'package:artsays_app/home_social/widget/social_bottom_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../config/size_config.dart';
+
 class SocialAddScreen extends StatelessWidget {
   final VoidCallback onCreatePostTap;
 
@@ -12,8 +14,9 @@ class SocialAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     return Scaffold(
       body: Stack(
@@ -34,7 +37,7 @@ class SocialAddScreen extends StatelessWidget {
                       235,
                       217,
                       217,
-                    ).withOpacity(0.3),
+                    ).withValues(alpha: 0.3),
                   ),
                   width: double.infinity,
                   child: const SizedBox.shrink(),

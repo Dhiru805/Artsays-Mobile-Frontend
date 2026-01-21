@@ -1,10 +1,10 @@
-import 'package:artsays_app/certification/screen/certificate_services.dart';
 import 'package:artsays_app/certification/screen/certification_main_screen.dart';
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/svg_asset_constant.dart';
 import 'package:artsays_app/home_social/profileTabBar/screen/artist_tab_bar_view.dart';
 import 'package:artsays_app/home_social/profileTabBar/screen/bookmark_tab_bar_view.dart';
 import 'package:artsays_app/home_social/profileTabBar/screen/products_tab_bar_view.dart';
+import 'package:artsays_app/home_social/profileTabBar/screen/settings_screen.dart';
 import 'package:artsays_app/home_social/profileTabBar/screen/social_profile_artist_my_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -131,9 +131,7 @@ class _CustomTabBarState extends State<CustomTabBar>
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => CertificateServices(),
-                    ),
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
                   );
                 },
                 icon: Icon(

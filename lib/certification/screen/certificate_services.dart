@@ -27,7 +27,7 @@ class _CertificateServicesState extends State<CertificateServices> {
           ? ColorConstant.backgroundColor
           : Colors.white,
 
-      appBar: const CertificationAppbar(),
+      appBar: const CertificationAppbar(city: "City",),
 
       body: Stack(
         children: [

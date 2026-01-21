@@ -40,4 +40,5 @@ class ImageAssetConstant {
   static const String artsaysLogo = 'assets/images/a_logo_img.png';
   static const String homeSlider1 = 'assets/images/home_slider1.png';
   static const String bannerIamge = 'assets/images/banner_img.png';
+  static const String communityIconImage = 'assets/images/community.png';
 }

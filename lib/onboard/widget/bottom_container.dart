@@ -53,9 +53,127 @@ class _BottomContainerState extends State<BottomContainer>
 
   @override
   Widget build(BuildContext context) {
-    // Use LayoutBuilder to get the container's height and translate it by that
-    // height when exiting. AnimatedBuilder listens to the _exitController to
-    // drive a pixel-perfect translation so the widget moves fully off screen.
+    // return SlideTransition(
+    //   position: _offsetAnimation,
+    //   child: Container(
+    //     padding: EdgeInsets.all(32),
+    //     decoration: BoxDecoration(
+    //       color: ColorConstant.white,
+    //       borderRadius: BorderRadius.only(
+    //         topLeft: Radius.circular(62),
+    //         topRight: Radius.circular(62),
+    //       ),
+    //     ),
+    //     child: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         Text(
+    //           "Welcome",
+    //           style: GoogleFonts.poppins(
+    //             fontSize: SizeConfig.getFont(25),
+    //             fontWeight: FontWeight.w600,
+    //             color: ColorConstant.orange,
+    //           ),
+    //         ),
+    //         SizedBox(height: SizeConfig.getHeight(10)),
+    //         RichText(
+    //           textAlign: TextAlign.center,
+    //           text: TextSpan(
+    //             style: GoogleFonts.montserrat(
+    //               color: Color(0XFF48372D),
+    //               fontSize: SizeConfig.getFont(14),
+    //               fontWeight: FontWeight.w500,
+    //             ),
+    //             children: [
+    //               TextSpan(text: "A space where creativity finds its voice.\n"),
+    //               TextSpan(text: "Discover a platform made for artists,\n"),
+    //               TextSpan(text: "collectors, and dreamers."),
+    //             ],
+    //           ),
+    //         ),
+    //         SizedBox(height: SizeConfig.getHeight(10)),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: [
+    //             Expanded(
+    //               child: ElevatedButton(
+    //                 onPressed: () {
+    //                   Navigator.pushReplacement(
+    //                     context,
+    //                     MaterialPageRoute(
+    //                       builder: (context) => const SignupScreen(),
+    //                     ),
+    //                   );
+    //                 },
+    //                 style: ElevatedButton.styleFrom(
+    //                   elevation: 0,
+    //                   side: BorderSide(color: ColorConstant.orange),
+    //                   backgroundColor: Colors.white,
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(30),
+    //                   ),
+    //                 ),
+    //                 child: Text(
+    //                   StringConstant.signup,
+    //                   style: GoogleFonts.poppins(
+    //                     fontSize: SizeConfig.getFont(14),
+    //                     fontWeight: FontWeight.w600,
+    //                     color: ColorConstant.orange,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             SizedBox(width: SizeConfig.getWidth(24)),
+    //             Expanded(
+    //               child: MyButton(
+    //                 onpressed: () {
+    //                   Navigator.pushReplacement(
+    //                     context,
+    //                     PageRouteBuilder(
+    //                       transitionDuration: const Duration(seconds: 3),
+    //                       pageBuilder: (context, animation, secondaryAnimation) {
+    //                         return const LoginPage(); // must directly return your page
+    //                       },
+    //                       transitionsBuilder:
+    //                           (context, animation, secondaryAnimation, child) {
+    //                             // Slide from bottom to top
+    //                             final offsetAnimation =
+    //                                 Tween<Offset>(
+    //                                   begin: const Offset(
+    //                                     0,
+    //                                     1,
+    //                                   ), // start off screen (bottom)
+    //                                   end: Offset.zero, // final position
+    //                                 ).animate(
+    //                                   CurvedAnimation(
+    //                                     parent: animation,
+    //                                     curve: Curves.linear,
+    //                                   ),
+    //                                 );
+    //
+    //                             return SlideTransition(
+    //                               position: offsetAnimation,
+    //                               child: child,
+    //                             );
+    //                           },
+    //                     ),
+    //                   );
+    //                 },
+    //                 color: ColorConstant.orange,
+    //                 text: StringConstant.login,
+    //                 textStyle: TextStyle(color: Colors.white),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // // Use LayoutBuilder to get the container's height and translate it by that
+    // // height when exiting. AnimatedBuilder listens to the _exitController to
+    // // drive a pixel-perfect translation so the widget moves fully off screen.
+    // );
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return AnimatedBuilder(

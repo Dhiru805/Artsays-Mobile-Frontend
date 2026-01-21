@@ -2,9 +2,35 @@ import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:flutter/material.dart';
 
-class CertificationAppbar extends StatelessWidget
+import '../../services/location_service/location_service.dart';
+
+class CertificationAppbar extends StatefulWidget
     implements PreferredSizeWidget {
-  const CertificationAppbar({super.key});
+  final String city;
+  const CertificationAppbar({super.key, required this.city});
+
+  @override
+  State<CertificationAppbar> createState() => _CertificationAppbarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(110);
+}
+
+class _CertificationAppbarState extends State<CertificationAppbar> {
+  String city = "Fetching...";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCity();
+  }
+
+  Future<void> fetchCity() async {
+    final fetchedCity = await LocationService.getCityName();
+    setState(() {
+      city = fetchedCity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +77,7 @@ class CertificationAppbar extends StatelessWidget
                       onPressed: () {},
                     ),
                     Text(
-                      "Pune",
+                      widget.city,
                       style: TextStyle(
                         fontSize: screenWidth * 0.04,
                         color: Colors.white,
@@ -113,7 +139,4 @@ class CertificationAppbar extends StatelessWidget
       toolbarHeight: screenHeight * 0.14,
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(110);
 }

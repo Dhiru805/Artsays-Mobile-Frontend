@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../config/size_config.dart';
+
 class SocialExploreScreen extends StatefulWidget {
   const SocialExploreScreen({super.key});
 
@@ -17,10 +19,8 @@ class SocialExploreScreen extends StatefulWidget {
 
 class _SocialExploreScreenState extends State<SocialExploreScreen>
     with SingleTickerProviderStateMixin {
-  late double screenwidth;
-  late double screenHeight;
 
-  final List<String> iamgeAssets = [
+  final List<String> imageAssets = [
     ImageAssetConstant.waterBoat,
     ImageAssetConstant.fieldBoat,
     ImageAssetConstant.grassField,
@@ -40,30 +40,32 @@ class _SocialExploreScreenState extends State<SocialExploreScreen>
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenwidth = MediaQuery.of(context).size.width;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     return Scaffold(
       backgroundColor: ColorConstant.backgroundColor,
       body: SocialBottomAnimation(
         child: Container(
-          width: screenwidth,
+          width: screenWidth,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(screenwidth * 0.07),
-              topRight: Radius.circular(screenwidth * 0.07),
+              topLeft: Radius.circular(screenWidth * 0.07),
+              topRight: Radius.circular(screenWidth * 0.07),
             ),
           ),
 
           child: Padding(
+            /// TODO: Change here
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: MasonryGridView.count(
               crossAxisCount: 3,
               crossAxisSpacing: 3,
               mainAxisSpacing: 2,
 
-              itemCount: iamgeAssets.length,
+              itemCount: imageAssets.length,
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -76,11 +78,11 @@ class _SocialExploreScreenState extends State<SocialExploreScreen>
                     children: [
                       ClipRRect(
                         // borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(iamgeAssets[index]),
+                        child: Image.asset(imageAssets[index]),
                       ),
                       // SizedBox(height: 2),
                       Container(
-                        height: 20,
+                        height: screenHeight * 0.02,
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: Row(
                           children: [
@@ -88,14 +90,14 @@ class _SocialExploreScreenState extends State<SocialExploreScreen>
                               child: Text(
                                 "Lorem ipsum",
                                 style: GoogleFonts.montserrat(
-                                  fontSize: 10,
+                                  fontSize: SizeConfig.getFont(10),
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const SizedBox(width: 5),
+                            SizedBox(width: screenWidth * 0.01),
                             Align(
                               alignment: Alignment.topLeft,
                               child: CustomPopupMenu(

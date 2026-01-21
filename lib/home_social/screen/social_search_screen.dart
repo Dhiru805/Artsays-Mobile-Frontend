@@ -5,6 +5,8 @@ import 'package:artsays_app/home_social/widget/social_bottom_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../config/size_config.dart';
+
 class SocialSearchScreen extends StatefulWidget {
   const SocialSearchScreen({super.key});
 
@@ -14,8 +16,6 @@ class SocialSearchScreen extends StatefulWidget {
 
 class _SocialSearchScreenState extends State<SocialSearchScreen>
     with SingleTickerProviderStateMixin {
-  late double screenWidth;
-  late double screenHeight;
 
   List<String> recentSearches = [
     "Modern Art",
@@ -55,8 +55,9 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     return Scaffold(
       // resizeToAvoidBottomInset: true,
@@ -178,8 +179,8 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
                                           child: SvgPicture.asset(
                                             SvgImageAssetConstant
                                                 .searchListIcon,
-                                            width: 18,
-                                            height: 18,
+                                            width: screenWidth * 0.032,
+                                            height: screenHeight * 0.018,
                                             fit: BoxFit.contain,
                                           ),
                                         ),
@@ -257,7 +258,7 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
                                           left: 0,
                                           right: 0,
                                           child: Container(
-                                            height: 8, // line thickness
+                                            height: screenHeight * 0.008, // line thickness
                                             color: ColorConstant
                                                 .backgroundColor, // line color
                                           ),
@@ -299,7 +300,7 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
                                           left: 0,
                                           right: 0,
                                           child: Container(
-                                            height: 8, // line thickness
+                                            height: screenHeight * 0.008, // line thickness
                                             color: ColorConstant
                                                 .backgroundColor, // line color
                                           ),
@@ -334,13 +335,13 @@ class ProfileCard extends StatelessWidget {
   final double screenHeight;
 
   const ProfileCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.title,
     required this.image,
     required this.screenWidth,
     required this.screenHeight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -407,7 +408,7 @@ class ProfileCard extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 10, // line thickness
+                  height: screenHeight * 0.008, // line thickness
                   decoration: BoxDecoration(
                     color: ColorConstant.backgroundColor, // line color
                     borderRadius: BorderRadius.only(

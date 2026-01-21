@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../config/size_config.dart';
+
 class AddPostDetails extends StatefulWidget {
   final File? imageFile;
   const AddPostDetails({super.key, this.imageFile});
@@ -33,8 +35,8 @@ class _AddPostDetailsState extends State<AddPostDetails> {
 
   void _postContent() {
     if (_selectedImage == null) return;
-    final caption = _captionController.text;
-    final location = _locationController.text;
+    // final caption = _captionController.text;
+    // final location = _locationController.text;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Post uploaded successfully!')),
@@ -43,8 +45,10 @@ class _AddPostDetailsState extends State<AddPostDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    /// TODO: change here
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     return Scaffold(
       // backgroundColor: ColorConstant.backgroundColor,

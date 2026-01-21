@@ -2,10 +2,16 @@ import 'package:artsays_app/config/size_config.dart';
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
+import 'package:artsays_app/services/api_services/auth_apis/auth_api_service.dart';
+import 'package:artsays_app/shared/widgets/custome_toast.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';
-import 'package:artsays_app/shared/widgets/social_bottom_nav_bar.dart';
+import 'package:artsays_app/signup/screen/signup_screen.dart';
 import 'package:artsays_app/signup/widget/signup_container.dart';
 import 'package:flutter/material.dart';
+
+import '../certification/screen/certification_main_screen.dart';
+import '../model/auth_models/login_model.dart';
+import '../services/local_data_storage_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +21,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
@@ -40,9 +51,8 @@ class _LoginPageState extends State<LoginPage> {
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
-                bottom: keyboardVisible
-                    ? 100
-                    : 0, // move up when keyboard appears
+                bottom: keyboardVisible ? 100 : 0,
+                // move up when keyboard appears
                 left: 0,
                 right: 0,
                 child: Container(
@@ -91,6 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                         height: SizeConfig.getHeight(35),
                         width: SizeConfig.getWidth(390),
                         child: TextField(
+                          controller: emailController,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 20),
@@ -125,11 +137,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
 
-                      SizedBox(height: 8),
+                      SizedBox(height: SizeConfig.getHeight(8)),
                       SizedBox(
                         height: SizeConfig.getHeight(35),
                         width: SizeConfig.getWidth(390),
                         child: TextField(
+                          controller: passwordController,
+                          obscureText: !showPassword,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 20),
@@ -137,6 +152,19 @@ class _LoginPageState extends State<LoginPage> {
                                 Icons.lock,
                                 color: ColorConstant.white,
                               ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showPassword = !showPassword;
+                                });
+                              },
+                              icon: showPassword
+                                  ? Icon(Icons.visibility, color: Colors.white)
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Colors.white,
+                                    ),
                             ),
                             hintText: "Password",
                             hintStyle: TextStyle(
@@ -182,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                               "Forgot Password?",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: SizeConfig.getFont(1),
+                                fontSize: SizeConfig.getFont(15),
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -195,14 +223,37 @@ class _LoginPageState extends State<LoginPage> {
                         height: SizeConfig.getHeight(45),
                         width: SizeConfig.getWidth(160),
                         child: MyButton(
-                          onpressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const SocialBottomNavBar(),
-                              ),
-                            );
+                          onpressed: () async {
+                            // aloksuper333@gmail.com
+                            await setEarlierLogin(true);
+                            String email = emailController.text;
+                            String password = passwordController.text;
+                            LoginModel lm = await login(email, password);
+                            if (lm.userType != null) {
+                              await saveEmailOrPhone(email);
+                              await savePassword(password);
+                              await saveAuthToken(lm.token);
+                              await saveUserID(lm.userId);
+                              await saveUserType(lm.userType!.name);
+                              if (!context.mounted) return;
+                              customToast(
+                                message: lm.userType!.name,
+                                context: context,
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CertificationMainScreen(),
+                                ),
+                              );
+                            } else {
+                              if (!context.mounted) return;
+                              customToast(
+                                message: lm.message,
+                                context: context,
+                              );
+                            }
                           },
                           color: ColorConstant.orange,
                           text: StringConstant.login,
@@ -271,6 +322,13 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: SizeConfig.getHeight(10)),
                       GestureDetector(
                         onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupScreen(),
+                            ),
+                          );
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(

@@ -4,6 +4,8 @@ import 'package:artsays_app/home_social/widget/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../config/size_config.dart';
+
 class CustomSliderContainer extends StatefulWidget {
   const CustomSliderContainer({super.key});
 
@@ -15,8 +17,6 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
-  late double screenWidth;
-  late double screenHeight;
 
   @override
   void initState() {
@@ -41,8 +41,9 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
     return SlideTransition(
       position: _offsetAnimation,
       child: Container(
@@ -67,7 +68,7 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
                   radius: 38,
                   backgroundImage: AssetImage(ImageAssetConstant.nehaShetty),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: screenWidth * 0.016),
                 // Name and Stats
                 Expanded(
                   child: Column(
@@ -77,11 +78,11 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
                         "Neha Shetty",
                         style: GoogleFonts.montserrat(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: SizeConfig.getFont(16),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: screenHeight * 0.012),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
@@ -107,7 +108,7 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
               ],
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.02),
 
             // Bio
             Text(
@@ -115,20 +116,19 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: SizeConfig.getFont(16),
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: screenHeight * 0.004),
             Text(
               "When Art Speaks, Value Grows",
               style: GoogleFonts.montserrat(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: SizeConfig.getFont(14),
                 fontWeight: FontWeight.w400,
               ),
             ),
-
-            const SizedBox(height: 8),
+            SizedBox(height: screenHeight * 0.008),
 
             // Link Row
             Row(
@@ -144,19 +144,20 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
                     child: Icon(Icons.link, color: Colors.white, size: 16),
                   ),
                 ),
-                SizedBox(width: 6),
+
+                SizedBox(width: screenWidth * 0.012),
                 Text(
                   "When Art Speaks, Value Grows",
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: SizeConfig.getFont(14),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: screenHeight * 0.024),
 
             // Buttons Row
             Row(
@@ -176,13 +177,13 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
                     child: Text(
                       "Follow",
                       style: GoogleFonts.montserrat(
-                        fontSize: 14,
+                        fontSize: SizeConfig.getFont(14),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: screenWidth * 0.024),
                 // Visit Store Button
                 Expanded(
                   child: OutlinedButton(
@@ -199,12 +200,12 @@ class _CustomSliderContainerState extends State<CustomSliderContainer>
                       style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                        fontSize: SizeConfig.getFont(14),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: screenWidth * 0.02),
                 // Add People Icon Button
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -241,16 +242,16 @@ class _StatItem extends StatelessWidget {
           value,
           style: GoogleFonts.montserrat(
             color: Colors.white,
-            fontSize: 14,
+            fontSize: SizeConfig.getFont(14),
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: SizeConfig.screenHeight * 0.002),
         Text(
           label,
           style: GoogleFonts.montserrat(
             color: Colors.white,
-            fontSize: 12,
+            fontSize: SizeConfig.getFont(12),
             fontWeight: FontWeight.w500,
           ),
         ),

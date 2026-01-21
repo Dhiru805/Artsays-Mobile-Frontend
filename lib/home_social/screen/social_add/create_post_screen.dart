@@ -8,6 +8,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../../config/size_config.dart';
+
 class CreatePostScreen extends StatefulWidget {
   final Function(File imageFile) onCreatePostTap;
   final File? imageFile;
@@ -135,8 +137,9 @@ class _CreatePostScreenState extends State<CreatePostScreen>
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
+    SizeConfig.init(context);
+    final screenHeight = SizeConfig.screenHeight;
+    final screenWidth = SizeConfig.screenWidth;
 
     return Scaffold(
       backgroundColor: ColorConstant.backgroundColor,
@@ -226,7 +229,7 @@ class _CreatePostScreenState extends State<CreatePostScreen>
                                 child: Container(
                                   padding: EdgeInsets.all(6),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.6),
+                                    color: Colors.white.withValues(alpha: 0.6),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Icon(
@@ -262,42 +265,35 @@ class _CreatePostScreenState extends State<CreatePostScreen>
                 ),
 
                 // Tabs Section
-                Container(
-                  // height: screenHeight * 0.065,
-                  // margin: EdgeInsets.only(bottom: screenHeight * 0.015),
-                  child: TabBar(
-                    dividerColor: Colors.transparent,
-                    controller: _tabController,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.black,
-                    indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(
-                        color: Colors.black, // rgba(0,0,0,1)
-                        width: 0.5, // 0.5px border
-                      ),
-                      insets: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                TabBar(
+                  dividerColor: Colors.transparent,
+                  controller: _tabController,
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.black,
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                      color: Colors.black, // rgba(0,0,0,1)
+                      width: 0.5, // 0.5px border
                     ),
-                    labelPadding: EdgeInsets.zero,
-                    tabs: [
-                      Tab(text: 'Gallery'),
-                      Tab(text: 'Photo'),
-                      // Tab(text: 'Video'),
-                    ],
+                    insets: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   ),
+                  labelPadding: EdgeInsets.zero,
+                  tabs: [
+                    Tab(text: 'Gallery'),
+                    Tab(text: 'Photo'),
+                    // Tab(text: 'Video'),
+                  ],
                 ),
 
                 // Tab Content
                 Expanded(
-                  child: Container(
-                    // margin: EdgeInsets.only(top: screenHeight * 0.01),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        _buildGalleryTab(screenWidth, screenHeight),
-                        _buildCameraTab(),
-                        // _buildVideoTab(),
-                      ],
-                    ),
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildGalleryTab(screenWidth, screenHeight),
+                      _buildCameraTab(),
+                      // _buildVideoTab(),
+                    ],
                   ),
                 ),
               ],
