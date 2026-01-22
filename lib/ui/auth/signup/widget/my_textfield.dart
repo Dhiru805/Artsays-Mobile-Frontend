@@ -2,7 +2,7 @@ import 'package:artsays_app/config/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../constants/color_constant.dart';
+import '../../../../constants/color_constant.dart';
 
 class MyTextfield extends StatefulWidget {
   final String text;

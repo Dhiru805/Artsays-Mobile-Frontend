@@ -1,8 +1,8 @@
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/svg_asset_constant.dart';
-import 'package:artsays_app/home_social/screen/home_social_screen.dart';
-import 'package:artsays_app/home_social/screen/social_search_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/home_social_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/social_search_screen.dart';
 import 'package:artsays_app/shared/widgets/bottom_bar_menu.dart';
 import 'package:flutter/material.dart';
 

@@ -1,18 +1,19 @@
 import 'dart:io';
 
+import 'package:artsays_app/config/size_config.dart';
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/svg_asset_constant.dart';
-import 'package:artsays_app/home_social/profileTabBar/widget/custom_tab_bar.dart';
-import 'package:artsays_app/home_social/screen/home_social_screen.dart';
-import 'package:artsays_app/home_social/screen/social_add/add_post_details.dart';
-import 'package:artsays_app/home_social/screen/social_add/create_post_screen.dart';
-import 'package:artsays_app/home_social/screen/social_add/social_add_screen.dart';
-import 'package:artsays_app/home_social/screen/social_explore_screen.dart';
-import 'package:artsays_app/home_social/screen/social_search_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/community_profile_page.dart';
+import 'package:artsays_app/ui/buyer/community/screens/home_social_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/post_screens/add_post_details.dart';
+import 'package:artsays_app/ui/buyer/community/screens/post_screens/create_post_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/social_add_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/social_explore_screen.dart';
+import 'package:artsays_app/ui/buyer/community/screens/social_search_screen.dart';
 import 'package:artsays_app/shared/widgets/bottom_bar_menu.dart';
 import 'package:artsays_app/shared/widgets/custom_app_bar.dart';
-import 'package:artsays_app/shared/widgets/notification_screen.dart'; // ✅ Add import at top
+import 'package:artsays_app/ui/buyer/community/screens/notification_screen.dart'; // ✅ Add import at top
 import 'package:flutter/material.dart';
 
 class SocialBottomNavBar extends StatefulWidget {
@@ -39,7 +40,7 @@ class _SocialBottomNavBarState extends State<SocialBottomNavBar> {
         },
       ),
       SocialExploreScreen(),
-      CustomTabBar(),
+      CommunityProfilePage(),
 
       CreatePostScreen(
         onCreatePostTap: (File imageFile) {
@@ -53,7 +54,7 @@ class _SocialBottomNavBarState extends State<SocialBottomNavBar> {
       NotificationScreen(),
     ];
 
-    return Scaffold(
+    return SafeArea(child: Scaffold(
       backgroundColor: (_selectedIndex == 2 || _selectedIndex == 4)
           ? ColorConstant.backgroundColor
           : Colors.white,
@@ -72,28 +73,28 @@ class _SocialBottomNavBarState extends State<SocialBottomNavBar> {
       //     : null,
       appBar: (_selectedIndex != 4)
           ? PreferredSize(
-              preferredSize: Size.fromHeight(kToolbarHeight),
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: _selectedIndex == 7
-                      ? Radius.circular(30)
-                      : Radius.zero,
-                  bottomRight: _selectedIndex == 7
-                      ? Radius.circular(30)
-                      : Radius.zero,
-                ),
-                child: CustomAppBar(
-                  onNotificationTap: () {
-                    setState(() {
-                      _selectedIndex = 7; // ✅ show notifications
-                    });
-                  },
-                  title: '',
-                  fontFamily: '',
-                  centerTitle: false,
-                ),
-              ),
-            )
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            bottomLeft: _selectedIndex == 7
+                ? Radius.circular(30)
+                : Radius.zero,
+            bottomRight: _selectedIndex == 7
+                ? Radius.circular(30)
+                : Radius.zero,
+          ),
+          child: CustomAppBar(
+            onNotificationTap: () {
+              setState(() {
+                _selectedIndex = 7; // ✅ show notifications
+              });
+            },
+            title: '',
+            fontFamily: '',
+            centerTitle: false,
+          ),
+        ),
+      )
           : null,
 
       body: Center(child: screen[_selectedIndex]),
@@ -146,10 +147,10 @@ class _SocialBottomNavBarState extends State<SocialBottomNavBar> {
                     setState(() {
                       _selectedIndex = 2; // index of SocialAddScreen
                     });
-                  }, // this button is + icon in bottaom navigation bar//
+                  }, // this button is + icon in bottom navigation bar//
                   child: SizedBox(
-                    height: 70,
-                    width: 74.94,
+                    height: SizeConfig.getHeight(70),
+                    width: SizeConfig.getWidth(74.94),
                     child: Image.asset(ImageAssetConstant.addNavBarImage),
                   ),
                 ),
@@ -180,6 +181,6 @@ class _SocialBottomNavBarState extends State<SocialBottomNavBar> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

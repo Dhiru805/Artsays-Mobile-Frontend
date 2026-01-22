@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../config/size_config.dart';
+import '../../../../config/size_config.dart';
 
 class SocialExploreScreen extends StatefulWidget {
   const SocialExploreScreen({super.key});

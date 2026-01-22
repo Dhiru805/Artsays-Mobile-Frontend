@@ -2,6 +2,7 @@ import 'package:artsays_app/certification/artist_screens/screens/artist_home_scr
 import 'package:artsays_app/certification/artist_screens/screens/bid_rid_screen.dart';
 import 'package:artsays_app/certification/widget/certification_appbar.dart';
 import 'package:artsays_app/certification/widget/certification_bottom_nav_bar.dart';
+import 'package:artsays_app/ui/buyer/screens/categories_screen.dart';
 import 'package:artsays_app/ui/buyer/widgets/user_info_card.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   final List<Widget> _screens = [
     ArtistHomeScreen(),
     BidRidScreen(),
-    ArtistHomeScreen(),
+    CategoriesScreen(),
     ProfilePage(),
   ];
 

@@ -1,8 +1,8 @@
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
-import 'package:artsays_app/login/login.dart';
+import 'package:artsays_app/ui/auth/login/login.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';
-import 'package:artsays_app/signup/screen/signup_screen.dart';
+import 'package:artsays_app/ui/auth/signup/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -1,5 +1,6 @@
 import 'package:artsays_app/config/size_config.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
+import 'package:artsays_app/ui/buyer/community/screens/bottom_nav_bar.dart';
 import 'package:artsays_app/ui/buyer/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -54,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           myButton(
                             icon: FeatherIcons.package,
                             "Orders",
-                                () {},
+                            () {},
                             screenHeight,
                             screenWidth,
                           ),
@@ -62,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           myButton(
                             icon: FeatherIcons.heart,
                             "Wishlist",
-                                () {},
+                            () {},
                             screenHeight,
                             screenWidth,
                           ),
@@ -75,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           myButton(
                             icon: Icons.headset_mic_outlined,
                             "Help",
-                                () {},
+                            () {},
                             screenHeight,
                             screenWidth,
                           ),
@@ -83,7 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           myButton(
                             icon2: ImageAssetConstant.communityIconImage,
                             "Community",
-                                () {},
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SocialBottomNavBar(),
+                                ),
+                              );
+                            },
                             screenHeight,
                             screenWidth,
                           ),
@@ -95,216 +103,224 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
 
-            Expanded(child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  /// My account
-                  // 🔹 Title
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.01,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "My Account",
-                        style: TextStyle(
-                          color: ColorConstant.orange,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    /// My account
+                    // 🔹 Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.05,
+                        vertical: screenHeight * 0.01,
                       ),
-                    ),
-                  ),
-
-                  // 🔹 List Section
-                  ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      listItem(
-                        "Payment Methods",
-                        0,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Manage Addresses",
-                        1,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Account Verification",
-                        2,
-                        screenWidth,
-                        screenHeight,
-                            () {
-                          // setState(() {
-                          //   showCertificate = !showCertificate;
-                          // });
-                        },
-                      ),
-                      listItem(
-                        "Notification",
-                        3,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem("Coupons", 4, screenWidth, screenHeight, () {}),
-                      listItem(
-                        "Challenges",
-                        5,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Password Manager",
-                        6,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Account Security and Agreement",
-                        7,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Privacy Center",
-                        8,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                    ],
-                  ),
-
-                  /// Become An Artist
-                  // 🔹 Title
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.01,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Become An Artist",
-                        style: TextStyle(
-                          color: ColorConstant.orange,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // 🔹 List Section
-                  ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      listItem(
-                        "Sell on Artsays",
-                        9,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                    ],
-                  ),
-
-
-                  /// My Activity
-                  // 🔹 Title
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.05,
-                      vertical: screenHeight * 0.01,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "My Activity",
-                        style: TextStyle(
-                          color: ColorConstant.orange,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // 🔹 List Section
-                  ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      listItem(
-                        "Reviews given",
-                        9,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Custom Request",
-                        10,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                      listItem(
-                        "Milestones",
-                        11,
-                        screenWidth,
-                        screenHeight,
-                            () {},
-                      ),
-                    ],
-                  ),
-
-
-                  SizedBox(height: screenHeight * 0.02,),
-
-                  /// Logout
-                  SizedBox(
-                    width: screenWidth * 0.9,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.0014,
-                        ),
-                        // backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(screenWidth * 0.5),
-                          side: const BorderSide(
-                            color: Colors.black,
-                            width: 1,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "My Account",
+                          style: TextStyle(
+                            color: ColorConstant.orange,
+                            fontSize: screenWidth * 0.05,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      child: Text(
-                        "Logout",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenWidth * 0.05,
+                    ),
+
+                    // 🔹 List Section
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        listItem(
+                          "Payment Methods",
+                          0,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Manage Addresses",
+                          1,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Account Verification",
+                          2,
+                          screenWidth,
+                          screenHeight,
+                          () {
+                            // setState(() {
+                            //   showCertificate = !showCertificate;
+                            // });
+                          },
+                        ),
+                        listItem(
+                          "Notification",
+                          3,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Coupons",
+                          4,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Challenges",
+                          5,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Password Manager",
+                          6,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Account Security and Agreement",
+                          7,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Privacy Center",
+                          8,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                      ],
+                    ),
+
+                    /// Become An Artist
+                    // 🔹 Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.05,
+                        vertical: screenHeight * 0.01,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Become An Artist",
+                          style: TextStyle(
+                            color: ColorConstant.orange,
+                            fontSize: screenWidth * 0.05,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+
+                    // 🔹 List Section
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        listItem(
+                          "Sell on Artsays",
+                          9,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                      ],
+                    ),
+
+                    /// My Activity
+                    // 🔹 Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.05,
+                        vertical: screenHeight * 0.01,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "My Activity",
+                          style: TextStyle(
+                            color: ColorConstant.orange,
+                            fontSize: screenWidth * 0.05,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // 🔹 List Section
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        listItem(
+                          "Reviews given",
+                          9,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Custom Request",
+                          10,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                        listItem(
+                          "Milestones",
+                          11,
+                          screenWidth,
+                          screenHeight,
+                          () {},
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: screenHeight * 0.02),
+
+                    /// Logout
+                    SizedBox(
+                      width: screenWidth * 0.9,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.0014,
+                          ),
+                          // backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              screenWidth * 0.5,
+                            ),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: screenWidth * 0.05,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),),
+            ),
           ],
         ),
       ),

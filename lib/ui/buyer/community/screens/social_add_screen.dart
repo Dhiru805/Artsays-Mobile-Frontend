@@ -5,7 +5,7 @@ import 'package:artsays_app/home_social/widget/social_bottom_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../config/size_config.dart';
+import '../../../../config/size_config.dart';
 
 class SocialAddScreen extends StatelessWidget {
   final VoidCallback onCreatePostTap;

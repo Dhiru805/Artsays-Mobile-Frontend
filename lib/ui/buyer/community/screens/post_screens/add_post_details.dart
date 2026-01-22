@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../config/size_config.dart';
+import '../../../../../config/size_config.dart';
 
 class AddPostDetails extends StatefulWidget {
   final File? imageFile;

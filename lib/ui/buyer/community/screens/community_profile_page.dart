@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomTabBar extends StatefulWidget {
-  const CustomTabBar({super.key});
+class CommunityProfilePage extends StatefulWidget {
+  const CommunityProfilePage({super.key});
 
   @override
-  State<CustomTabBar> createState() => _CustomTabBarState();
+  State<CommunityProfilePage> createState() => _CommunityProfilePageState();
 }
 
-class _CustomTabBarState extends State<CustomTabBar>
+class _CommunityProfilePageState extends State<CommunityProfilePage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late AnimationController _animationController;
@@ -114,12 +114,13 @@ class _CustomTabBarState extends State<CustomTabBar>
             actions: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CertificationMainScreen(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => CertificationMainScreen(),
+                  //   ),
+                  // );
+
                 },
                 icon: Icon(
                   Icons.refresh_sharp,

@@ -3,12 +3,12 @@ import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/enums.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
-import 'package:artsays_app/login/login.dart';
+import 'package:artsays_app/ui/auth/login/login.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/auth_models/otp_verification_model.dart';
-import '../../services/api_services/auth_apis/auth_api_service.dart';
+import '../../../../model/auth_models/otp_verification_model.dart';
+import '../../../../services/api_services/auth_apis/auth_api_service.dart';
 
 class SellerScreen extends StatefulWidget {
   const SellerScreen({super.key});

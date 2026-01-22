@@ -2,7 +2,7 @@ import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../config/size_config.dart';
+import '../../../../config/size_config.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

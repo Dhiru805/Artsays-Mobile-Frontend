@@ -8,7 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import '../../../config/size_config.dart';
+import '../../../../../config/size_config.dart';
 
 class CreatePostScreen extends StatefulWidget {
   final Function(File imageFile) onCreatePostTap;
@@ -138,6 +138,7 @@ class _CreatePostScreenState extends State<CreatePostScreen>
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
+    print("On Create Post Screen");
     final screenHeight = SizeConfig.screenHeight;
     final screenWidth = SizeConfig.screenWidth;
 
