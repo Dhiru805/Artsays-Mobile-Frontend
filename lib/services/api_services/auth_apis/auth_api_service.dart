@@ -5,6 +5,7 @@ import 'package:artsays_app/model/auth_models/login_model.dart';
 import 'package:artsays_app/model/auth_models/otp_verification_model.dart';
 import 'package:http/http.dart' as http;
 
+/// Login API
 Future<LoginModel> login(String email, String password) async {
   String apiUrl = "$apiBaseUrl/auth/login";
 
@@ -23,6 +24,7 @@ Future<LoginModel> login(String email, String password) async {
   }
 }
 
+/// Registration API
 Future<OtpVerificationModel> register({
   required String firstName,
   required String lastName,
@@ -41,8 +43,8 @@ Future<OtpVerificationModel> register({
   String apiUrl = "$apiBaseUrl/auth/createuser";
 
   final http.Response response;
-  if(userType.toLowerCase() == "artist") {
-    if(isPhone){
+  if (userType.toLowerCase() == "artist") {
+    if (isPhone) {
       response = await http.post(
         Uri.parse(apiUrl),
         headers: {"Content-Type": "application/json"},
@@ -77,8 +79,8 @@ Future<OtpVerificationModel> register({
         }),
       );
     }
-  } else if(userType.toLowerCase() == "buyer"){
-    if(isPhone){
+  } else if (userType.toLowerCase() == "buyer") {
+    if (isPhone) {
       response = await http.post(
         Uri.parse(apiUrl),
         headers: {"Content-Type": "application/json"},
@@ -112,7 +114,7 @@ Future<OtpVerificationModel> register({
       );
     }
   } else {
-    if(isPhone){
+    if (isPhone) {
       response = await http.post(
         Uri.parse(apiUrl),
         headers: {"Content-Type": "application/json"},
@@ -151,6 +153,7 @@ Future<OtpVerificationModel> register({
   return otpVerificationModelJson(response.body);
 }
 
+/// Send OTP API
 Future<OtpVerificationModel> sendOtp(String email, bool isPhone) async {
   String apiUrl = "$apiBaseUrl/auth/send-otp";
 
@@ -172,6 +175,7 @@ Future<OtpVerificationModel> sendOtp(String email, bool isPhone) async {
   return otpVerificationModelJson(response.body);
 }
 
+/// Verify OTP API
 Future<OtpVerificationModel> verifyOtp(
   String email,
   String otp,
@@ -194,6 +198,62 @@ Future<OtpVerificationModel> verifyOtp(
       body: {"email": email, "otp": otp},
     );
   }
+
+  return otpVerificationModelJson(response.body);
+}
+
+/// Send OTP for forgot password API
+Future<OtpVerificationModel> sendOtpForResetPassword(String email) async {
+  String apiUrl = "$apiBaseUrl/api/createotp";
+
+  final http.Response response;
+
+  response = await http.post(
+    Uri.parse(apiUrl),
+    // headers: {"Content-Type": "application/json"},
+    body: {"email": email},
+  );
+
+  return otpVerificationModelJson(response.body);
+}
+
+/// Verify OTP for forgot password API
+Future<OtpVerificationModel> verifyOtpForForgotPassword(
+  String email,
+  String otp,
+) async {
+  String apiUrl = "$apiBaseUrl/api/verifyotp";
+
+  final http.Response response;
+
+  response = await http.post(
+    Uri.parse(apiUrl),
+    // headers: {"Content-Type": "application/json"},
+    body: {"email": email, "otp": otp},
+  );
+
+  return otpVerificationModelJson(response.body);
+}
+
+/// Forgot Password API
+Future<OtpVerificationModel> forgotPassword({
+  required String token,
+  required String newPassword,
+  required String otp,
+  required String email,
+}) async {
+  String apiUrl = "$apiBaseUrl/api/resetpassword";
+  print(otp);
+  print(newPassword);
+  print(email);
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: {
+      "Content-Type": "application/json",
+      "Authentication": 'Barer $token',
+    },
+    body: jsonEncode({"email": email, "otp": otp, "newPassword": newPassword}),
+  );
 
   return otpVerificationModelJson(response.body);
 }

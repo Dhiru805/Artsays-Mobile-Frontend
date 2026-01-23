@@ -1,4 +1,3 @@
-import 'package:artsays_app/certification/screen/certification_main_screen.dart';
 import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/svg_asset_constant.dart';
 import 'package:artsays_app/home_social/profileTabBar/screen/artist_tab_bar_view.dart';
@@ -120,7 +119,6 @@ class _CommunityProfilePageState extends State<CommunityProfilePage>
                   //     builder: (context) => CertificationMainScreen(),
                   //   ),
                   // );
-
                 },
                 icon: Icon(
                   Icons.refresh_sharp,

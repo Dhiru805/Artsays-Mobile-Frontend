@@ -6,18 +6,18 @@ import 'package:artsays_app/ui/buyer/screens/categories_screen.dart';
 import 'package:artsays_app/ui/buyer/widgets/user_info_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/location_service/location_service.dart';
-import '../../ui/buyer/screens/profile_page.dart';
+import '../../../../services/location_service/location_service.dart';
+import '../../screens/profile_page.dart';
 
-class CertificationMainScreen extends StatefulWidget {
-  const CertificationMainScreen({super.key});
+class BuyerBottomNavBar extends StatefulWidget {
+  const BuyerBottomNavBar({super.key});
 
   @override
-  State<CertificationMainScreen> createState() =>
-      _CertificationMainScreenState();
+  State<BuyerBottomNavBar> createState() =>
+      _BuyerBottomNavBarState();
 }
 
-class _CertificationMainScreenState extends State<CertificationMainScreen> {
+class _BuyerBottomNavBarState extends State<BuyerBottomNavBar> {
   int _selectedIndex = 0;
 
   // 🔹 Screens list — these will change based on the bottom nav index

@@ -5,6 +5,7 @@ class MyButton extends StatelessWidget {
   final void Function() onpressed;
   final Color color;
   final String text;
+  final TextStyle textStyle;
   // final String textColor;
 
   const MyButton({
@@ -12,7 +13,7 @@ class MyButton extends StatelessWidget {
     required this.onpressed,
     required this.color,
     required this.text,
-    required TextStyle textStyle, //required this.textColor,
+    required this.textStyle, //required this.textColor,
   });
 
   @override
@@ -26,11 +27,7 @@ class MyButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: ColorConstant.white,
-        ),
+        style: textStyle,
       ),
     );
   }

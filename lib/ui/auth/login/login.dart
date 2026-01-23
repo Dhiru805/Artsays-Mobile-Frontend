@@ -1,15 +1,19 @@
 import 'package:artsays_app/config/size_config.dart';
 import 'package:artsays_app/constants/color_constant.dart';
+import 'package:artsays_app/constants/enums.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
-import 'package:artsays_app/shared/widgets/custome_toast.dart';
+import 'package:artsays_app/ui/auth/reset_password/password_change.dart';
+import 'package:artsays_app/ui/common/popups/custom_toast.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';
 import 'package:artsays_app/ui/auth/signup/screen/signup_screen.dart';
 import 'package:artsays_app/ui/auth/signup/widget/signup_container.dart';
 import 'package:flutter/material.dart';
 
-import '../../../certification/screen/certification_main_screen.dart';
+import '../../../model/auth_models/login_model.dart';
+import '../../../services/api_services/auth_apis/auth_api_service.dart';
 import '../../../services/local_data_storage_service.dart';
+import '../../buyer/community/screens/buyer_bottom_nav_bar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,8 +23,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController(
+    text: "kobet69491@discounp.com",
+  );
+  TextEditingController passwordController = TextEditingController(text: '123456789');
 
   bool showPassword = false;
 
@@ -200,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SignupContainer(),
+                                  builder: (context) => PasswordChange(),
                                 ),
                               );
                             },
@@ -225,53 +231,52 @@ class _LoginPageState extends State<LoginPage> {
                             // aloksuper333@gmail.com
                             await setEarlierLogin(true);
                             String email = emailController.text;
-                            // String password = passwordController.text;
-                            if (!context.mounted) return;
-                            if (email.toLowerCase() ==
-                                'devbuyer@gmail.com') {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CertificationMainScreen(),
-                                ),
+                            String password = passwordController.text;
+
+                            LoginModel lm = await login(email, password);
+                            if (lm.userType != null) {
+                              await saveEmailOrPhone(email);
+                              await savePassword(password);
+                              await saveAuthToken(lm.token);
+                              await saveUserID(lm.userId);
+                              await saveUserType(lm.userType!.name);
+                              if (!context.mounted) return;
+
+                              if (lm.userType == UserType.Buyer) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BuyerBottomNavBar(),
+                                  ),
+                                );
+                              } else if (lm.userType == UserType.Seller) {
+                                customToast(
+                                  message: "Seller",
+                                  context: context,
+                                );
+                              } else if (lm.userType == UserType.Artist) {
+                                customToast(
+                                  message: "Artist",
+                                  context: context,
+                                );
+                              } else {
+                                customToast(
+                                  message: "User have no permission to access the app",
+                                  context: context,
+                                );
+                              }
+                            } else {
+                              if (!context.mounted) return;
+                              customToast(
+                                message: lm.message,
+                                context: context,
                               );
                             }
-                            if (email.toLowerCase() == 'devseller@gmail.com') {
-                              customToast(message: "Seller", context: context);
-                            }
-                            if (email.toLowerCase() == 'devartist@gmail.com') {
-                              customToast(message: "Artist", context: context);
-                            }
-                            // LoginModel lm = await login(email, password);
-                            // if (lm.userType != null) {
-                            //   await saveEmailOrPhone(email);
-                            //   await savePassword(password);
-                            //   await saveAuthToken(lm.token);
-                            //   await saveUserID(lm.userId);
-                            //   await saveUserType(lm.userType!.name);
-                            //   customToast(
-                            //     message: lm.userType!.name,
-                            //     context: context,
-                            //   );
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           CertificationMainScreen(),
-                            //     ),
-                            //   );
-                            // } else {
-                            //   if (!context.mounted) return;
-                            //   customToast(
-                            //     message: lm.message,
-                            //     context: context,
-                            //   );
-                            // }
                           },
                           color: ColorConstant.orange,
                           text: StringConstant.login,
                           textStyle: TextStyle(
+                            color: ColorConstant.white,
                             fontWeight: FontWeight.w600,
                             fontSize: SizeConfig.getFont(18),
                           ),
