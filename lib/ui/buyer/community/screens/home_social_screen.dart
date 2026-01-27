@@ -1,7 +1,12 @@
 import 'package:artsays_app/constants/color_constant.dart';
+import 'package:artsays_app/constants/credentials/api_base_url.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/home_social/widget/social_bottom_animation.dart';
+import 'package:artsays_app/services/local_data_storage_service.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../model/community_models/home_page_model.dart';
+import '../../../../services/api_services/community_apis/community_api_services.dart';
 
 class HomeSocialScreen extends StatefulWidget {
   const HomeSocialScreen({super.key});
@@ -14,6 +19,7 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
     with SingleTickerProviderStateMixin {
   late double screenWidth;
   late double screenHeight;
+  String? userId;
 
   @override
   Widget build(BuildContext context) {
@@ -22,75 +28,55 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
 
     return Scaffold(
       backgroundColor: ColorConstant.backgroundColor,
-      // appBar: const CustomAppBar(title: '', fontFamily: '', centerTitle: false),
       body: SocialBottomAnimation(
-        child: SingleChildScrollView(
-          child: Container(
-            width: screenWidth,
-            decoration: BoxDecoration(
-              color: ColorConstant.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(screenWidth * 0.07),
-                topRight: Radius.circular(screenWidth * 0.07),
-              ),
+        child: Container(
+          width: screenWidth,
+          decoration: BoxDecoration(
+            color: ColorConstant.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(screenWidth * 0.07),
+              topRight: Radius.circular(screenWidth * 0.07),
             ),
-            child: Column(
-              children: [
-                SizedBox(height: screenHeight * 0.01),
+          ),
+          child: FutureBuilder(
+            future: getHomePageData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
 
-                _buildPostCard(
-                  profileImage: ImageAssetConstant.profileImage,
-                  username: 'Nelson_doley',
-                  image: ImageAssetConstant.computerImage,
-                  caption: 'Lorem ipsum dolor sit amet.... more',
-                  commentsCount: 32,
-                  timeAgo: '25 minutes ago',
-                  topVerified: true,
-                  showFollow: false,
-                  showBuyButton: true,
-                ),
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
+              }
 
-                SizedBox(height: screenHeight * 0.015),
+              if (snapshot.connectionState == ConnectionState.done) {
+                // print(snapshot.data!.posts.length);
+                return ListView.builder(
+                  itemCount: snapshot.data!.posts.length,
+                  itemBuilder: (context, index) {
+                    List<PostsModel> posts = snapshot.data!.posts;
+                    return _buildPostCard(
+                      profileImage: posts[index].user.profilePhoto ?? "null",
+                      username: posts[index].user.userName ?? "null",
+                      image: ImageAssetConstant.computerImage,
+                      caption: posts[index].caption,
+                      commentsCount: posts[index].comments.length,
+                      timeAgo: '25 minutes ago',
+                      topVerified: posts[index].user.verified!.isNotEmpty,
+                      showFollow: posts[index].showFollowButton,
+                      showBuyButton: true,
+                      likenCount: posts[index].likes.length,
+                      isSaved: posts[index].isSaved,
+                      isLiked: posts[index].likes.contains(userId)
+                    );
+                  },
+                );
+              }
 
-                _buildPostCard(
-                  profileImage: ImageAssetConstant.profileImage,
-                  username: 'Nelson_doley',
-                  image: ImageAssetConstant.instaPost2,
-                  caption: 'New artwork drop 🎨✨',
-                  showFollow: true,
-                  commentsCount: 18,
-                  timeAgo: '1 hour ago',
-                  topVerified: true,
-                  showBuyButton: false,
-                ),
-                SizedBox(height: screenHeight * 0.015),
-
-                _buildPostCard(
-                  profileImage: ImageAssetConstant.profileImage,
-                  username: 'Nelson_doley',
-                  image: ImageAssetConstant.instaPost2,
-                  caption: 'New artwork drop 🎨✨',
-                  showFollow: true,
-                  commentsCount: 18,
-                  timeAgo: '1 hour ago',
-                  topVerified: true,
-                  showBuyButton: false,
-                ),
-                SizedBox(height: screenHeight * 0.015),
-
-                _buildPostCard(
-                  profileImage: ImageAssetConstant.profileImage,
-                  username: 'Nelson_doley',
-                  image: ImageAssetConstant.instaPost2,
-                  caption: 'New artwork drop 🎨✨',
-                  showFollow: true,
-                  commentsCount: 18,
-                  timeAgo: '1 hour ago',
-                  topVerified: true,
-                  showBuyButton: false,
-                ),
-              ],
-            ),
+              return Center(child: Text("Something went wrong"));
+            },
           ),
         ),
       ),
@@ -103,11 +89,15 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
     required String image,
     required String caption,
     required int commentsCount,
+    required int likenCount,
     required String timeAgo,
     required bool topVerified,
     required bool showFollow,
+    required bool isSaved,
+    required bool isLiked,
     bool showBuyButton = false,
   }) {
+    profileImage = '$apiBaseUrl$profileImage';
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth * 0.02,
@@ -123,7 +113,9 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
                 children: [
                   CircleAvatar(
                     radius: screenWidth * 0.045,
-                    backgroundImage: AssetImage(profileImage),
+                    backgroundImage: profileImage == "null"
+                        ? AssetImage(ImageAssetConstant.profileImage)
+                        : NetworkImage(profileImage),
                   ),
                   SizedBox(width: screenWidth * 0.025),
                   Column(
@@ -228,34 +220,56 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
               children: [
                 Row(
                   children: [
-                    Icon(Icons.favorite_border, size: screenWidth * 0.07),
-                    Text(
-                      "15.K",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        fontWeight: FontWeight.w500,
+                    GestureDetector(
+                      child: Row(
+                        children: [
+                          Icon(isLiked ? Icons.favorite : Icons.favorite_border, size: screenWidth * 0.07, color: isLiked ? Colors.red : null,),
+                          Text(
+                            likenCount.toString(),
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.03,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(width: screenWidth * 0.03),
-                    Image.asset(
-                      ImageAssetConstant.commentImage,
-                      width: screenWidth * 0.06,
-                    ),
-                    Text(
-                      "$commentsCount",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        fontWeight: FontWeight.w500,
+                    GestureDetector(
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageAssetConstant.commentImage,
+                            width: screenWidth * 0.06,
+                          ),
+                          Text(
+                            "$commentsCount",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.03,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(width: screenWidth * 0.03),
-                    Image.asset(
-                      ImageAssetConstant.shareImage,
-                      width: screenWidth * 0.06,
+                    GestureDetector(
+                      child: Image.asset(
+                        ImageAssetConstant.shareImage,
+                        width: screenWidth * 0.06,
+                      ),
                     ),
                   ],
                 ),
-                Icon(Icons.bookmark_border, size: screenWidth * 0.07),
+                IconButton(
+                  onPressed: () {
+                    isSaved = !isSaved;
+                  },
+                  icon: Icon(
+                    isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    size: screenWidth * 0.07,
+                  ),
+                ),
               ],
             ),
           ),
@@ -310,5 +324,13 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
         ],
       ),
     );
+  }
+
+  Future<HomePageModel> getHomePageData() async {
+    userId = await getUserID();
+    String? token = await getAuthToken();
+    HomePageModel data = await getCommunityHomePageData(userId!, token!);
+
+    return data;
   }
 }

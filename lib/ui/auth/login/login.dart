@@ -3,6 +3,8 @@ import 'package:artsays_app/constants/color_constant.dart';
 import 'package:artsays_app/constants/enums.dart';
 import 'package:artsays_app/constants/image_asset_constant.dart';
 import 'package:artsays_app/constants/string_constant.dart';
+import 'package:artsays_app/model/community_models/home_page_model.dart';
+import 'package:artsays_app/services/api_services/community_apis/community_api_services.dart';
 import 'package:artsays_app/ui/auth/reset_password/password_change.dart';
 import 'package:artsays_app/ui/common/popups/custom_toast.dart';
 import 'package:artsays_app/shared/widgets/my_button.dart';

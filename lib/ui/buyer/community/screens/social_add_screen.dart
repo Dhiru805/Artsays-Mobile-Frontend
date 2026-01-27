@@ -65,38 +65,38 @@ class SocialAddScreen extends StatelessWidget {
                   child: SocialBottomAnimation(
                     child: Row(
                       children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: onCreatePostTap,
-
-                            icon: SvgPicture.asset(
-                              SvgImageAssetConstant.createPostImg,
-                              height: screenHeight * 0.04,
-                              width: screenWidth * 0.08,
-                            ),
-                            label: Text(
-                              "Create post",
-                              style: TextStyle(
-                                color: ColorConstant.backgroundColor,
-                                fontSize: screenWidth * 0.03,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                vertical: screenHeight * 0.004,
-                                horizontal: screenWidth * 0.004,
-                              ),
-                              backgroundColor: ColorConstant.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  screenWidth * 0.03,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: screenWidth * 0.04),
+                        // Expanded(
+                        //   child: ElevatedButton.icon(
+                        //     onPressed: onCreatePostTap,
+                        //
+                        //     icon: SvgPicture.asset(
+                        //       SvgImageAssetConstant.createPostImg,
+                        //       height: screenHeight * 0.04,
+                        //       width: screenWidth * 0.08,
+                        //     ),
+                        //     label: Text(
+                        //       "Create post",
+                        //       style: TextStyle(
+                        //         color: ColorConstant.backgroundColor,
+                        //         fontSize: screenWidth * 0.03,
+                        //         fontWeight: FontWeight.w700,
+                        //       ),
+                        //     ),
+                        //     style: ElevatedButton.styleFrom(
+                        //       padding: EdgeInsets.symmetric(
+                        //         vertical: screenHeight * 0.004,
+                        //         horizontal: screenWidth * 0.004,
+                        //       ),
+                        //       backgroundColor: ColorConstant.white,
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(
+                        //           screenWidth * 0.03,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(width: screenWidth * 0.04),
 
                         // Go Live Button
                         Expanded(
@@ -115,7 +115,7 @@ class SocialAddScreen extends StatelessWidget {
                               width: screenWidth * 0.08,
                             ),
                             label: Text(
-                              "Go Live",
+                              "Live",
                               style: TextStyle(
                                 color: ColorConstant.backgroundColor,
                                 fontSize: screenWidth * 0.03,

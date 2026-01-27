@@ -26,14 +26,14 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Builder(
+      home: SafeArea(child: Builder(
         builder: (context) {
           SizeConfig.init(context);
           // return SplashScreen(showAnimation: false,);
           return SplashWrapper();
         },
         // home: SplashScreen(),
-      ),
+      )),
     );
   }
 }
