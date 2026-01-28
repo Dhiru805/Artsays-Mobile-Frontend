@@ -38,44 +38,41 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
               topRight: Radius.circular(screenWidth * 0.07),
             ),
           ),
-          child: FutureBuilder(
+          child: FutureBuilder<HomePageModel>(
             future: getHomePageData(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
               if (snapshot.hasError) {
                 return Center(child: Text(snapshot.error.toString()));
               }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
-              }
+              final posts = snapshot.data!.posts;
 
-              if (snapshot.connectionState == ConnectionState.done) {
-                // print(snapshot.data!.posts.length);
-                return ListView.builder(
-                  itemCount: snapshot.data!.posts.length,
-                  itemBuilder: (context, index) {
-                    List<PostsModel> posts = snapshot.data!.posts;
-                    return _buildPostCard(
-                      profileImage: posts[index].user.profilePhoto ?? "null",
-                      username: posts[index].user.userName ?? "null",
-                      image: ImageAssetConstant.computerImage,
-                      caption: posts[index].caption,
-                      commentsCount: posts[index].comments.length,
-                      timeAgo: '25 minutes ago',
-                      topVerified: posts[index].user.verified!.isNotEmpty,
-                      showFollow: posts[index].showFollowButton,
-                      showBuyButton: true,
-                      likenCount: posts[index].likes.length,
-                      isSaved: posts[index].isSaved,
-                      isLiked: posts[index].likes.contains(userId)
-                    );
-                  },
-                );
-              }
+              return ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  final post = posts[index];
 
-              return Center(child: Text("Something went wrong"));
+                  return _buildPostCard(
+                    profileImage: post.user.profilePhoto ??
+                        "https://imgs.search.brave.com/7AtswmQtKSI7uikhXSWM07przAfFOQV4edS2mpZ3oS8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjIy/MTkxNTU4NS92ZWN0/b3IvZ3JleS1hdmF0/YXItaWNvbi11c2Vy/LWF2YXRhci1waG90/by1pY29uLXNvY2lh/bC1tZWRpYS11c2Vy/LWljb24tdmVjdG9y/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz05Q09iQnFMOHI2/NW9WZkhFNGh5RXFw/eWI4RndLN1ZmRHFG/MXFYRDVZTXo0PQ",
+                    username: post.user.userName ?? '',
+                    image: post.images,
+                    caption: post.caption,
+                    commentsCount: post.comments.length,
+                    likenCount: post.likes.length,
+                    topVerified: post.user.verified!.isNotEmpty,
+                    showFollow: post.showFollowButton,
+                    showBuyButton: true,
+                    isSaved: post.isSaved,
+                    isLiked: post.likes.contains(userId),
+                    verificationBadge: post.user.verified!.isNotEmpty ? post.user.verified!.first.badgeImage : "",
+                  );
+                },
+              );
             },
           ),
         ),
@@ -86,22 +83,31 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
   Widget _buildPostCard({
     required String profileImage,
     required String username,
-    required String image,
+    required List<String> image,
     required String caption,
     required int commentsCount,
     required int likenCount,
-    required String timeAgo,
     required bool topVerified,
     required bool showFollow,
     required bool isSaved,
     required bool isLiked,
+    required String verificationBadge,
     bool showBuyButton = false,
   }) {
-    profileImage = '$apiBaseUrl$profileImage';
+    if (!profileImage.startsWith('http')) {
+      profileImage = '$apiBaseUrl$profileImage';
+    }
+
+    if(!verificationBadge.startsWith('http')) {
+      verificationBadge = '$apiBaseUrl$verificationBadge';
+    }
+
+    final ValueNotifier<int> currentIndex = ValueNotifier<int>(0);
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth * 0.02,
-        vertical: screenHeight * 0.005,
+        vertical: screenHeight * 0.01,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,214 +119,159 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
                 children: [
                   CircleAvatar(
                     radius: screenWidth * 0.045,
-                    backgroundImage: profileImage == "null"
-                        ? AssetImage(ImageAssetConstant.profileImage)
-                        : NetworkImage(profileImage),
+                    backgroundColor: Colors.grey.shade200,
+                    child: ClipOval(
+                      child: Image.network(
+                        profileImage,
+                        width: screenWidth * 0.09,
+                        height: screenWidth * 0.09,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            ImageAssetConstant.profileImage,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   SizedBox(width: screenWidth * 0.025),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            username,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.035,
-                            ),
-                          ),
-                          if (topVerified) ...[
-                            SizedBox(width: screenWidth * 0.01),
-                            Icon(
-                              Icons.verified,
-                              color: Colors.blue,
-                              size: screenWidth * 0.04,
-                            ),
-                          ],
-                        ],
+                      Text(
+                        username,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.035,
+                        ),
                       ),
-                    ],
-                  ),
-                  if (showFollow)
-                    Row(
-                      children: [
+                      if (topVerified) ...[
                         SizedBox(width: screenWidth * 0.01),
-                        Image.asset(ImageAssetConstant.dotImage),
-                        SizedBox(width: screenWidth * 0.01),
-                        Text(
-                          "Follow",
-                          style: TextStyle(
-                            color: ColorConstant.backgroundColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Image.network(
+                          verificationBadge,
+                          width: screenWidth * 0.05,
+                          height: screenWidth * 0.05,
                         ),
                       ],
-                    ),
+                    ],
+                  ),
                 ],
               ),
-              Row(
-                children: [
-                  if (showBuyButton)
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0XFF48372D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            screenWidth * 0.05,
-                          ),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.04,
-                          vertical: screenHeight * 0.007,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Buy",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: screenWidth * 0.035,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: screenWidth * 0.015),
-                          Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: screenWidth * 0.045,
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (!showBuyButton) const SizedBox(width: 0),
-                  SizedBox(width: screenWidth * 0.02),
-                  Icon(Icons.more_vert, size: screenWidth * 0.055),
-                ],
-              ),
+              if(showFollow) ...[
+                SizedBox(width: screenWidth * 0.01),
+                ElevatedButton(onPressed: (){}, child: Text('Follow'))
+              ],
+              Icon(Icons.more_vert, size: screenWidth * 0.055),
             ],
           ),
+
           SizedBox(height: screenHeight * 0.015),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(screenWidth * 0.03),
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-              width: double.infinity,
+
+          SizedBox(
+            height: screenHeight * 0.35,
+            child: PageView.builder(
+              itemCount: image.length,
+              onPageChanged: (index) {
+                currentIndex.value = index;
+              },
+              itemBuilder: (context, index) {
+                String imageUrl = image[index];
+                if (!imageUrl.startsWith('http')) {
+                  imageUrl = '$apiBaseUrl$imageUrl';
+                }
+
+                return Padding(padding: EdgeInsets.all(2), child: ClipRRect(
+                  borderRadius:
+                  BorderRadius.circular(screenWidth * 0.03),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    errorBuilder: (_, __, ___) {
+                      return Image.asset(
+                        ImageAssetConstant.computerImage,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),);
+              },
             ),
           ),
+
+          /// ✅ DOTS BELOW IMAGE
+          if (image.length > 1)
+            Padding(
+              padding: EdgeInsets.only(top: screenHeight * 0.01),
+              child: ValueListenableBuilder<int>(
+                valueListenable: currentIndex,
+                builder: (context, index, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(image.length, (dotIndex) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        margin:
+                        const EdgeInsets.symmetric(horizontal: 4),
+                        width: index == dotIndex ? 8 : 6,
+                        height: index == dotIndex ? 8 : 6,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: index == dotIndex
+                              ? Colors.black
+                              : Colors.black26,
+                        ),
+                      );
+                    }),
+                  );
+                },
+              ),
+            ),
+
           SizedBox(height: screenHeight * 0.015),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          /// ACTIONS
+          Row(
+            children: [
+              Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
+                color: isLiked ? Colors.red : null,
+                size: screenWidth * 0.07,
+              ),
+              SizedBox(width: screenWidth * 0.01),
+              Text(likenCount.toString()),
+              SizedBox(width: screenWidth * 0.04),
+              Image.asset(
+                ImageAssetConstant.commentImage,
+                width: screenWidth * 0.06,
+              ),
+              SizedBox(width: screenWidth * 0.01),
+              Text(commentsCount.toString()),
+            ],
+          ),
+
+          SizedBox(height: screenHeight * 0.01),
+
+          /// CAPTION
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(color: Colors.black),
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      child: Row(
-                        children: [
-                          Icon(isLiked ? Icons.favorite : Icons.favorite_border, size: screenWidth * 0.07, color: isLiked ? Colors.red : null,),
-                          Text(
-                            likenCount.toString(),
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.03,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: screenWidth * 0.03),
-                    GestureDetector(
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            ImageAssetConstant.commentImage,
-                            width: screenWidth * 0.06,
-                          ),
-                          Text(
-                            "$commentsCount",
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.03,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: screenWidth * 0.03),
-                    GestureDetector(
-                      child: Image.asset(
-                        ImageAssetConstant.shareImage,
-                        width: screenWidth * 0.06,
-                      ),
-                    ),
-                  ],
+                TextSpan(
+                  text: '$username ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                IconButton(
-                  onPressed: () {
-                    isSaved = !isSaved;
-                  },
-                  icon: Icon(
-                    isSaved ? Icons.bookmark : Icons.bookmark_border,
-                    size: screenWidth * 0.07,
-                  ),
-                ),
+                TextSpan(text: caption),
               ],
             ),
           ),
-          SizedBox(height: screenHeight * 0.008),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: '$username ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: screenWidth * 0.035,
-                    ),
-                  ),
-                  TextSpan(
-                    text: caption,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: screenWidth * 0.035,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
+          SizedBox(height: screenHeight * 0.01),
+
+          Text(
+            'View all $commentsCount comments',
+            style: const TextStyle(color: Colors.grey),
           ),
-          SizedBox(height: screenHeight * 0.008),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-            child: Text(
-              'View all $commentsCount comments',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: screenWidth * 0.032,
-              ),
-            ),
-          ),
-          SizedBox(height: screenHeight * 0.008),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-            child: Text(
-              timeAgo,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: screenWidth * 0.03,
-              ),
-            ),
-          ),
-          SizedBox(height: screenHeight * 0.02),
         ],
       ),
     );
@@ -328,9 +279,7 @@ class _HomeSocialScreenState extends State<HomeSocialScreen>
 
   Future<HomePageModel> getHomePageData() async {
     userId = await getUserID();
-    String? token = await getAuthToken();
-    HomePageModel data = await getCommunityHomePageData(userId!, token!);
-
-    return data;
+    final token = await getAuthToken();
+    return getCommunityHomePageData(userId!, token!);
   }
 }
